@@ -1,6 +1,6 @@
 import { RECEIVE_USERS } from '../actions/users'
 
-export default function users(state = {}, action) {
+const users = (state = {}, action) => {
   switch(action.type) {
     case RECEIVE_USERS :
       return {
@@ -11,3 +11,5 @@ export default function users(state = {}, action) {
       return state
   }
 }
+
+export default users

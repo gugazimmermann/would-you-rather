@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setAuthedUser } from '../../actions/authedUser'
+import { withRouter } from 'react-router-dom'
+import { handleAuthedUser } from '../../actions/authedUser'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -29,15 +30,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Appbar = (props) => {
 
-  console.log(props)
-
   const classes = useStyles()
-
-  const {dispatch, menu, user} = props
+  const {menu, user} = props
 
   const handleLogout = e => {
       e.preventDefault()
-      dispatch(setAuthedUser(""))
+      props.history.push("/")
+      props.onHandleAuthedUser(null)
     }
 
   return (
@@ -48,7 +47,7 @@ const Appbar = (props) => {
         <Typography variant="h6" className={classes.title}>Would You Rather</Typography>
 
         <div className={classes.buttonList}>
-          <Button variant="contained" color={menu === "Home" ? "secondary" : "default" } className={classes.button}>Home</Button> 
+          <Button variant="contained" color={menu === "Home" ? "secondary" : "default" } className={classes.button} onClick={() => props.history.push("/")}>Home</Button> 
           <Button variant="contained" color={menu === "New Question" ? "secondary" : "default" } className={classes.button}>New Question</Button>
           <Button variant="contained" color={menu === "l Leader Board" ? "secondary" : "default" } className={classes.button}>Leader Board</Button>
         </div>
@@ -63,9 +62,15 @@ const Appbar = (props) => {
 }
 
 function mapStateToProps ({ authedUser, users }) {
-    return {
-      user: Object.keys(users).map(u => users[u]).find(u => u.id === authedUser)
-    }
+  return {
+    user: Object.keys(users).map(u => users[u]).find(u => u.id === authedUser)
   }
-  
-  export default connect(mapStateToProps)(Appbar)
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onHandleAuthedUser: (authedUser) => dispatch(handleAuthedUser(authedUser))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Appbar))

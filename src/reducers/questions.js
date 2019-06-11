@@ -1,6 +1,6 @@
 import { RECEIVE_QUESTIONS } from '../actions/questions'
 
-export default function questions(state = {}, action) {
+const questions = (state = {}, action) => {
   switch(action.type) {
     case RECEIVE_QUESTIONS :
       return {
@@ -11,3 +11,5 @@ export default function questions(state = {}, action) {
       return state
   }
 }
+
+export default questions
