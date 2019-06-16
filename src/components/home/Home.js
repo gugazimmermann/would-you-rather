@@ -12,7 +12,6 @@ import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 
-
 const Home = props => {
 
   const {questionList} = props
@@ -23,13 +22,10 @@ const Home = props => {
   }
 
   const useStyles = makeStyles(theme => ({
-    progress: {
-      margin: theme.spacing(2),
-    },
     paper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(6),
       flexGrow: 1,
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(3)
     },
     tab: {
       marginTop: theme.spacing(3),
@@ -61,9 +57,7 @@ const Home = props => {
 
 const mapStateToProps = ({ users, questions, authedUser }) => {
   const user = Object.keys(users).map(u => users[u]).find(u => u.id === authedUser)
-
-  const questionsArray = Object.keys(questions).map(q => questions[q])
-  const questionsSorted = questionsArray.sort((a,b) =>b.timestamp - a.timestamp)
+  const questionsSorted = Object.keys(questions).map(q => questions[q]).sort((a,b) =>b.timestamp - a.timestamp)
   const formatedQuestions = questionsSorted.map(q => {
     let answeredQuestion = (q.optionOne.votes.findIndex(v => v === user.id) > -1) ? 1
                            : (q.optionTwo.votes.findIndex(v => v === user.id) > -1) ? 2

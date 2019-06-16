@@ -10,32 +10,32 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button'
 
-const useStyles = makeStyles(theme => ({
-    card: {
-        width: 360,
-        marginBottom: theme.spacing(2)
-    },
-    cardContent: {
-        paddingTop: '0',
-        paddingBottom: '0'
-    },
-    title: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1)
-    },
-    cardAction: {
-        paddingTop: '0'
-    }
-}));
-
 const Question = (props) => {
 
     const {question} = props
-    const classes = useStyles();
   
     const handleViewPoll = (e, id) => {
         props.history.push(`/questions/${id}`)
     }
+
+    const useStyles = makeStyles(theme => ({
+        card: {
+            width: '360px',
+            marginBottom: theme.spacing(2)
+        },
+        cardContent: {
+            paddingTop: '0',
+            paddingBottom: '0'
+        },
+        title: {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1)
+        },
+        cardAction: {
+            paddingTop: '0'
+        }
+    }))
+    const classes = useStyles()
 
     return (
         <Card className={classes.card}>

@@ -3,37 +3,40 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import LoadingBar from 'react-redux-loading'
 
-import { handleInitialData } from '../actions/shared'
-import { handleAuthedUser } from '../actions/authedUser'
+import { handleInitialData, handleAuthedUser } from '../actions'
 
 import Login from './login/Login'
 import Home from './home/Home'
 import QuestionDetails from './question-details/QuestionDetails'
+import Leaderboard from './leaderboard/Leaderboard'
+import NewQuestion from './new-question/NewQuestion';
 
 class App extends Component {
 
   componentDidMount() {
+    const {onHandleInitialData, authedUser, onHandleAuthedUser} = this.props
     document.title="Would You Rather"
-    this.props.onHandleInitialData()
-    if (this.props.authedUser) this.props.onHandleAuthedUser(this.props.authedUser)
+    onHandleInitialData()
+    if (authedUser) onHandleAuthedUser(authedUser)
   }
 
   render() {
+    const {loading, authedUser} = this.props
     return (
       <Router>  
         <Fragment>
-          <LoadingBar />
-          <div>
-          {this.props.loading === true
+          <LoadingBar style={{backgroundColor: '#ffd600', height: '20px', position: 'absolute'}} />
+          {loading === true
             ? null
-            : !this.props.authedUser
+            : !authedUser
               ? <Route component={Login} />
               : <div>
                   <Route exact path='/' component={Home} />
                   <Route exact path='/questions/:question_id' component={QuestionDetails} />
+                  <Route exact path='/leaderboard' component={Leaderboard} />
+                  <Route exact path='/add' component={NewQuestion} />
                 </div>
           }
-          </div>
         </Fragment>
       </Router>
     )

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { formatCard } from '../../utils/helpers'
-import * as API from '../../utils/api'
-import { handleGetQuestions } from '../../actions/shared'
+import { saveQuestionAnswer } from '../../actions'
 import Appbar from '../appbar/Appbar'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -24,6 +23,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const QuestionDetails = (props) => {
 
@@ -31,29 +31,32 @@ const QuestionDetails = (props) => {
     const [value, setValue] = useState('')
     const [submitButton, setSubmitButton] = useState(true)
 
+    const calcPer = (qty, qty2) => Math.floor((100 * qty) / (qty + qty2))
+
     function handleChange(event) {
         setValue(event.target.value)
     }
-
+    
     const handleViewPoll = (e, question) => {
         setSubmitButton(false)
-        API.saveQuestionAnswer({ authedUser: authedUser, qid: question, answer: (value === "1") ? "optionOne" : "optionTwo" })
-        onSaveQuestionAnswer().then(res => {
+        let questionInfo = { authedUser: authedUser, qid: question, answer: (value === "1") ? "optionOne" : "optionTwo" }
+        onSaveQuestionAnswer(questionInfo).then(() => {
             setSubmitButton(true)
         })
     }
 
     const useStyles = makeStyles(theme => ({
         paper: {
-            marginTop: theme.spacing(3),
-            padding: theme.spacing(3),
             flexGrow: 1,
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(3),
+            padding: theme.spacing(3),
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
         },
         card: {
-            width: 360,
+            width: '360px',
             marginBottom: theme.spacing(2)
         },
         cardContent: {
@@ -64,6 +67,7 @@ const QuestionDetails = (props) => {
             paddingBottom: theme.spacing(1)
         },
         cardAction: {
+            position: 'relative',
             paddingTop: '0'
         },
         badge: {
@@ -71,6 +75,13 @@ const QuestionDetails = (props) => {
         },
         box: {
             width: '100%'
+        },
+        buttonProgress: {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -15,
+            marginLeft: -15,
         }
     }))
     
@@ -78,7 +89,7 @@ const QuestionDetails = (props) => {
         badge: {
             top: 0,
             right: 25,
-            border: `2px solid`,
+            border: `2px solid ${theme.palette.primary.dark}`,
             padding: '10px'
         }
     }))(Badge)
@@ -99,14 +110,20 @@ const QuestionDetails = (props) => {
                     {question.answeredQuestion === null && (
                     <div>
                     <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.title}>Would You Rather</Typography>
+                        <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.title}>
+                            Would You Rather
+                        </Typography>
                         <RadioGroup aria-label="Question" name="question"  className={classes.group} value={value} onChange={handleChange}>
                             <FormControlLabel value="1" control={<Radio />} label={question.title} />
                             <FormControlLabel value="2" control={<Radio />} label={question.title2} />
                         </RadioGroup>
                     </CardContent>
                     <CardActions  className={classes.cardAction}>
-                        <Button fullWidth variant="contained" color="secondary" disabled={!submitButton || !value} onClick={e => handleViewPoll(e, question.id)}>Submit</Button>
+                        <Button fullWidth variant="contained" color="secondary" disabled={!submitButton || !value} 
+                            onClick={e => handleViewPoll(e, question.id)}>
+                            Submit
+                        </Button>
+                        {(!submitButton) && <CircularProgress size={24} className={classes.buttonProgress} />}
                     </CardActions>
                     </div>
                     )}
@@ -116,19 +133,25 @@ const QuestionDetails = (props) => {
                         {question.answeredQuestion === 1 && (
                         <div>
                         <StyledBadge color="secondary" badgeContent={"Your Vote"} invisible={false} className={classes.badge}>
-                            <Box bgcolor="primary.light" color="primary.contrastText" borderColor="primary.main" border={2} borderRadius={8} mb={2} p={2} className={classes.box}>
-                                <Typography variant="h6" component="h6" align="center"> Would you rather {question.title}?</Typography>
-                                <LinearProgress variant="determinate" color="secondary" value={Math.floor((100 * question.qty) / (question.qty + question.qty2))} />
+                            <Box bgcolor="primary.light" color="primary.contrastText" borderColor="primary.main" border={2} borderRadius={8} mb={2} p={2} 
+                                 className={classes.box}>
+                                <Typography variant="h6" component="h6" align="center">
+                                    Would you rather {question.title}?
+                                </Typography>
+                                <LinearProgress variant="determinate" color="secondary"
+                                                value={calcPer(question.qty, question.qty2)} />
                                 <Typography variant="subtitle1" component="h3" align="center">
-                                    {Math.floor((100 * question.qty) / (question.qty + question.qty2))}% - {question.qty} of {question.qty + question.qty2} Votes
+                                   {calcPer(question.qty, question.qty2)} % - {question.qty} of {question.qty + question.qty2} Votes
                                 </Typography>
                             </Box>
                         </StyledBadge>
                         <Box bgcolor={grey[100]} borderColor={grey[500]} border={2} borderRadius={8} p={2}>
-                            <Typography variant="h6" component="h6" align="center"> Would you rather {question.title2}?</Typography>
-                            <LinearProgress variant="determinate" color="primary" value={Math.floor((100 * question.qty2) / (question.qty + question.qty2))} />
+                            <Typography variant="h6" component="h6" align="center">
+                                Would you rather {question.title2}?
+                            </Typography>
+                            <LinearProgress variant="determinate" color="primary" value={calcPer(question.qty2, question.qty)} />
                             <Typography variant="subtitle1" component="h3" align="center">
-                                {Math.floor((100 * question.qty2) / (question.qty + question.qty2))}% - {question.qty2} of {question.qty + question.qty2} Votes
+                                {calcPer(question.qty2, question.qty)}% - {question.qty2} of {question.qty + question.qty2} Votes
                             </Typography>
                         </Box>
                         </div>
@@ -137,17 +160,20 @@ const QuestionDetails = (props) => {
                         <div>
                         <Box bgcolor={grey[100]} borderColor={grey[500]} border={2} borderRadius={8} mb={2} p={2}>
                             <Typography variant="h6" component="h6" align="center"> Would you rather {question.title}?</Typography>
-                            <LinearProgress variant="determinate" color="primary" value={Math.floor((100 * question.qty) / (question.qty + question.qty2))} />
+                            <LinearProgress variant="determinate" color="primary" value={calcPer(question.qty, question.qty2)} />
                             <Typography variant="subtitle1" component="h3" align="center">
-                                {Math.floor((100 * question.qty) / (question.qty + question.qty2))}% - {question.qty} of {question.qty + question.qty2} Votes
+                                {calcPer(question.qty, question.qty2)}% - {question.qty} of {question.qty + question.qty2} Votes
                             </Typography>
                         </Box>
                         <StyledBadge color="secondary" badgeContent={"Your Vote"} invisible={false} className={classes.badge}>
-                            <Box bgcolor="primary.light" color="primary.contrastText" borderColor="primary.main" border={2} borderRadius={8} p={2} className={classes.box}>
-                                <Typography variant="h6" component="h6" align="center"> Would you rather {question.title2}?</Typography>
-                                <LinearProgress variant="determinate" color="secondary" value={Math.floor((100 * question.qty2) / (question.qty + question.qty2))} />
+                            <Box bgcolor="primary.light" color="primary.contrastText" borderColor="primary.main" border={2} borderRadius={8} p={2} 
+                                 className={classes.box}>
+                                <Typography variant="h6" component="h6" align="center">
+                                    Would you rather {question.title2}?
+                                </Typography>
+                                <LinearProgress variant="determinate" color="secondary" value={calcPer(question.qty2, question.qty)} />
                                 <Typography variant="subtitle1" component="h3" align="center">
-                                    {Math.floor((100 * question.qty2) / (question.qty + question.qty2))}% - {question.qty2} of {question.qty + question.qty2} Votes
+                                    {calcPer(question.qty2, question.qty)}% - {question.qty2} of {question.qty + question.qty2} Votes
                                 </Typography>
                             </Box>
                         </StyledBadge>
@@ -177,7 +203,7 @@ const mapStateToProps = ({ users, questions, authedUser }, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSaveQuestionAnswer: () => dispatch(handleGetQuestions())
+        onSaveQuestionAnswer: (questionInfo) => dispatch(saveQuestionAnswer(questionInfo))
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { handleAuthedUser } from '../../actions/authedUser'
+import { handleAuthedUser } from '../../actions'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -10,34 +10,35 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 
-const useStyles = makeStyles((theme) => ({
-  logo: {
-    marginRight: theme.spacing(1),
-  },
-  title: {
-    marginRight: theme.spacing(2),
-  },
-  buttonList: {
-    flexGrow: 1
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  hello: {
-    marginRight: theme.spacing(1)
-  }
-}))
-
 const Appbar = (props) => {
 
-  const classes = useStyles()
-  const {menu, user} = props
+  const {menu, user, onHandleAuthedUser} = props
 
   const handleLogout = e => {
-      e.preventDefault()
-      props.history.push("/")
-      props.onHandleAuthedUser(null)
+    e.preventDefault()
+    props.history.push("/")
+    onHandleAuthedUser(null)  
+  }
+
+  const useStyles = makeStyles((theme) => ({
+    logo: {
+      marginRight: theme.spacing(1),
+    },
+    title: {
+      marginRight: theme.spacing(2),
+    },
+    buttonList: {
+      flexGrow: 1
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+    hello: {
+      marginRight: theme.spacing(1)
     }
+  }))
+
+  const classes = useStyles()
 
   return (
     <AppBar position="static">
@@ -47,9 +48,27 @@ const Appbar = (props) => {
         <Typography variant="h6" className={classes.title}>Would You Rather</Typography>
 
         <div className={classes.buttonList}>
-          <Button variant="contained" color={menu === "Home" ? "secondary" : "default" } className={classes.button} onClick={() => props.history.push("/")}>Home</Button> 
-          <Button variant="contained" color={menu === "New Question" ? "secondary" : "default" } className={classes.button}>New Question</Button>
-          <Button variant="contained" color={menu === "l Leader Board" ? "secondary" : "default" } className={classes.button}>Leader Board</Button>
+          <Button 
+            variant="contained" 
+            color={menu === "Home" ? "secondary" : "default" } 
+            className={classes.button} 
+            onClick={() => props.history.push("/")}>
+              Home
+          </Button> 
+          <Button 
+            variant="contained" 
+            color={menu === "New Question" ? "secondary" : "default" } 
+            className={classes.button}
+            onClick={() => props.history.push("/add")}>
+              New Question
+          </Button>
+          <Button 
+            variant="contained" 
+            color={menu === "Leaderboard" ? "secondary" : "default" } 
+            className={classes.button} 
+            onClick={() => props.history.push("/leaderboard")}>
+              Leaderboard
+          </Button>
         </div>
 
         <Typography variant="subtitle1" className={classes.hello}>Hello, {user.name}</Typography>

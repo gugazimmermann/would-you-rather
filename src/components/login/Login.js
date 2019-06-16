@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { handleAuthedUser } from '../../actions/authedUser'
+import { handleAuthedUser } from '../../actions'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -18,7 +18,7 @@ import Button from '@material-ui/core/Button'
 
 const Login = (props) => {
 
-  const {usersList} = props
+  const {usersList, onHandleAuthedUser} = props
   const [authedUser, setAuthedUser] = useState("")  
 
   const handleListItemClick = (e, id) => {
@@ -28,12 +28,12 @@ const Login = (props) => {
   const handleSubmit = e => {
     e.preventDefault()
     props.history.push("/")
-    props.onHandleAuthedUser(authedUser)
+    onHandleAuthedUser(authedUser)
   }
 
   const useStyles = makeStyles((theme) => ({
     card: {
-      marginTop: theme.spacing(8),
+      marginTop: theme.spacing(4),
       padding: theme.spacing(2),
       display: 'flex',
       flexDirection: 'column',
@@ -67,7 +67,7 @@ const Login = (props) => {
                 </ListItemAvatar>
                 <ListItemText id={user.id} primary={user.name} />
                 <ListItemSecondaryAction>
-                  <Checkbox edge="end" checked={authedUser === user.id} onClick={e => handleListItemClick(e, user.id)} inputProps={{ 'aria-labelledby': user.id }} />
+                  <Checkbox edge="end" checked={authedUser === user.id} onClick={e => handleListItemClick(e, user.id)} />
                 </ListItemSecondaryAction>
               </ListItem>
             )}
