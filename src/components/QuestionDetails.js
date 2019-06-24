@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { formatCard } from '../../utils/helpers'
-import { saveQuestionAnswer } from '../../actions'
-import Appbar from '../appbar/Appbar'
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import Container from '@material-ui/core/Container'
@@ -24,6 +20,9 @@ import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { formatCard } from '../utils/helpers'
+import { saveQuestionAnswer } from '../actions'
+import Appbar from './Appbar'
 
 const QuestionDetails = (props) => {
 
@@ -84,7 +83,6 @@ const QuestionDetails = (props) => {
             marginLeft: -15,
         }
     }))
-    
     const StyledBadge = withStyles(theme => ({
         badge: {
             top: 0,

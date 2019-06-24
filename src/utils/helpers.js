@@ -21,13 +21,11 @@ export const formatCard = (question, author, answeredQuestion) => {
   }
 }
 
-export const formatLeaderboard = (user, answers) => {
-  return {
-    id: user.id,
-    name: user.name,
-    avatarURL: user.avatarURL,
-    questions: user.questions.length, 
-    answers: answers.length,
-    total: (answers.length + user.questions.length)
-  }
-}
+export const formatLeaderboard = (user, answers) => ({
+  id: user.id,
+  name: user.name,
+  avatarURL: user.avatarURL,
+  questions: user.questions.length, 
+  answers: answers.length,
+  total: (answers.length + user.questions.length)
+})

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import theme from './mui-theme'
+import theme from './utils/mui-theme'
 
 import App from './components/App'
 import './index.css'

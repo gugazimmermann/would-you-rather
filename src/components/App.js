@@ -2,14 +2,13 @@ import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import LoadingBar from 'react-redux-loading'
-
+import theme from '../utils/mui-theme'
 import { handleInitialData, handleAuthedUser } from '../actions'
-
-import Login from './login/Login'
-import Home from './home/Home'
-import QuestionDetails from './question-details/QuestionDetails'
-import Leaderboard from './leaderboard/Leaderboard'
-import NewQuestion from './new-question/NewQuestion';
+import Login from './Login'
+import Home from './Home'
+import QuestionDetails from './QuestionDetails'
+import Leaderboard from './Leaderboard'
+import NewQuestion from './NewQuestion';
 
 class App extends Component {
 
@@ -25,7 +24,7 @@ class App extends Component {
     return (
       <Router>  
         <Fragment>
-          <LoadingBar style={{backgroundColor: '#ffd600', height: '20px', position: 'absolute'}} />
+          <LoadingBar style={{backgroundColor: theme.palette.secondary.main, height: '20px', position: 'absolute'}} />
           {loading === true
             ? null
             : !authedUser
