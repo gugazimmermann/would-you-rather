@@ -1,25 +1,24 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import grey from '@material-ui/core/colors/grey'
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Avatar from '@material-ui/core/Avatar'
+import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Badge from '@material-ui/core/Badge';
-import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Badge from '@material-ui/core/Badge'
+import Box from '@material-ui/core/Box'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { formatCard } from '../utils/helpers'
 import { saveQuestionAnswer } from '../actions'
 import Appbar from './Appbar'
@@ -205,4 +204,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(QuestionDetails))
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionDetails)

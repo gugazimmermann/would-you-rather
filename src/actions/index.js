@@ -39,3 +39,15 @@ export const saveQuestionAnswer = (info) => {
     })
   }
 }
+
+export const saveNewQuestion = (info) => {
+  return (dispatch) => {  
+    return API.saveNewQuestion(info).then(() => {
+      return getInitialData().then(({ users, questions }) => {
+        dispatch(receiveUsers(users))
+        dispatch(receiveQuestions(questions))
+        return {users, questions}
+      })  
+    })
+  }
+}

@@ -8,7 +8,7 @@ import Login from './Login'
 import Home from './Home'
 import QuestionDetails from './QuestionDetails'
 import Leaderboard from './Leaderboard'
-import NewQuestion from './NewQuestion';
+import NewQuestion from './NewQuestion'
 
 class App extends Component {
 

@@ -12,6 +12,6 @@ export const getUsers = () => _getUsers()
 
 export const getQuestions = () => _getQuestions()
 
-export const saveQuestion = info => _saveQuestion(info)
+export const saveNewQuestion = info => _saveQuestion(info)
 
 export const saveQuestionAnswer = info => _saveQuestionAnswer(info)
