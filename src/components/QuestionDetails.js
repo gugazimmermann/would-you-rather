@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import grey from '@material-ui/core/colors/grey'
 import Container from '@material-ui/core/Container'
@@ -93,6 +94,7 @@ const QuestionDetails = (props) => {
     const classes = useStyles()
 
     return (
+        question ? (
         <Container component="main" maxWidth="lg">
             <CssBaseline />
             <Appbar />
@@ -182,16 +184,22 @@ const QuestionDetails = (props) => {
                 </Card>
             </Paper>
         </Container>
+        ) : (
+        <Redirect to="/notfound"/>
+        )
     )
 }
 
 const mapStateToProps = ({ users, questions, authedUser }, props) => {
+    let answeredQuestion, formatedQuestion
     const user = Object.keys(users).map(u => users[u]).find(u => u.id === authedUser)
     const q = questions[props.match.params.question_id]
-    const answeredQuestion = (q.optionOne.votes.findIndex(v => v === user.id) > -1) ? 1
+    if (q) {
+        answeredQuestion = (q.optionOne.votes.findIndex(v => v === user.id) > -1) ? 1
                             : (q.optionTwo.votes.findIndex(v => v === user.id) > -1) ? 2
                             : null
-    const formatedQuestion = formatCard(questions[q.id], users[q.author], answeredQuestion)
+        formatedQuestion = formatCard(questions[q.id], users[q.author], answeredQuestion)
+    }
     return { 
         question: formatedQuestion,
         authedUser: authedUser

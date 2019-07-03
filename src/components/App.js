@@ -9,6 +9,7 @@ import Home from './Home'
 import QuestionDetails from './QuestionDetails'
 import Leaderboard from './Leaderboard'
 import NewQuestion from './NewQuestion'
+import NotFound from './NotFound'
 
 class App extends Component {
 
@@ -34,6 +35,7 @@ class App extends Component {
                   <Route exact path='/questions/:question_id' component={QuestionDetails} />
                   <Route exact path='/leaderboard' component={Leaderboard} />
                   <Route exact path='/add' component={NewQuestion} />
+                  <Route exact path='/notfound' component={NotFound} />
                 </div>
           }
         </Fragment>
